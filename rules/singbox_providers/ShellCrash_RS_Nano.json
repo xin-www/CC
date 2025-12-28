@@ -1,0 +1,40 @@
+//ShellCrash-ruleset极简规则
+{
+  "outbounds": [
+    { "tag": "🚀 节点选择", "type": "selector", "outbounds": [ {providers_tags}, "DIRECT" ], "use_all_providers": true },
+    { "tag": "🎯 全球直连", "type": "selector", "outbounds": [ "DIRECT", "🚀 节点选择" ] }
+  ],
+  "route": {
+    "rules": [
+      { "rule_set": [ "privateip" ], "outbound": "🎯 全球直连" },
+      { "rule_set": [ "cn" ], "outbound": "🎯 全球直连" },
+
+      { "action": "resolve", "server": "dns_proxy", "strategy": "prefer_ipv4"},
+      { "rule_set": [ "cnip" ], "outbound": "🎯 全球直连" }
+    ],
+    "rule_set": [
+      {
+        "tag": "cn",
+        "type": "remote",
+        "format": "binary",
+        "path": "./ruleset/cn.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@sing-box-ruleset/cn.srs"
+      },
+      {
+        "tag": "privateip",
+        "type": "remote",
+        "format": "binary",
+        "path": "./ruleset/privateip.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@sing-box-ruleset/privateip.srs"
+      },
+      {
+        "tag": "cnip",
+        "type": "remote",
+        "format": "binary",
+        "path": "./ruleset/cnip.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@sing-box-ruleset/cnip.srs"
+      }
+    ],
+    "final": "🚀 节点选择"
+  }
+}
